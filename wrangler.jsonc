@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "d1-http",
+	"name": "d1-http-worker",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-12-02",
 	"observability": {
