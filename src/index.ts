@@ -20,7 +20,20 @@ app.post('/api/all', async (c) => {
     let { query, params } = await c.req.json();
     let stmt = c.env.DB.prepare(query);
     if (params) {
-      stmt = stmt.bind(params);
+      const cleanParams = params.map((p:any) => {
+		if (p === null || p === undefined) return null;
+
+		if (typeof p === 'number') return p; // good
+		if (typeof p === 'string') return p; // good
+		if (typeof p === 'boolean') return p ? 1 : 0;
+
+		// handle Number objects or boxed values
+		if (p.valueOf) return p.valueOf();
+
+		return p.toString();
+	});
+
+	stmt = stmt.bind(cleanParams);
     }
 
     const result = await stmt.run();
